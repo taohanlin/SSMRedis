@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.thl.dao.IncomeMapper" >
+    <resultMap id="BaseResultMap" type="org.thl.entity.Income" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="game_id" property="gameId" jdbcType="INTEGER" />
+        <result column="game_name" property="gameName" jdbcType="VARCHAR" />
+        <result column="game_server" property="gameServer" jdbcType="INTEGER" />
+        <result column="player_account" property="playerAccount" jdbcType="VARCHAR" />
+        <result column="player_recharge" property="playerRecharge" jdbcType="DOUBLE" />
+        <result column="proportion" property="proportion" jdbcType="DOUBLE" />
+        <result column="proportion_percent" property="proportionPercent" jdbcType="VARCHAR" />
+        <result column="income" property="income" jdbcType="DOUBLE" />
+        <result column="income_time" property="incomeTime" jdbcType="TIMESTAMP" />
+        <result column="user_id" property="userId" jdbcType="INTEGER" />
+        <result column="account" property="account" jdbcType="VARCHAR" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+        id, game_id, game_name, game_server, player_account, player_recharge, proportion,
+        proportion_percent, income, income_time, user_id, account
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select
+        <include refid="Base_Column_List" />
+        from pro_income
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+        delete from pro_income
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="org.thl.entity.Income" >
+        insert into pro_income (id, game_id, game_name,
+        game_server, player_account, player_recharge,
+        proportion, proportion_percent, income,
+        income_time, user_id, account
+        )
+        values (#{id,jdbcType=INTEGER}, #{gameId,jdbcType=INTEGER}, #{gameName,jdbcType=VARCHAR},
+        #{gameServer,jdbcType=INTEGER}, #{playerAccount,jdbcType=VARCHAR}, #{playerRecharge,jdbcType=DOUBLE},
+        #{proportion,jdbcType=DOUBLE}, #{proportionPercent,jdbcType=VARCHAR}, #{income,jdbcType=DOUBLE},
+        #{incomeTime,jdbcType=TIMESTAMP}, #{userId,jdbcType=INTEGER}, #{account,jdbcType=VARCHAR}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="org.thl.entity.Income" >
+        insert into pro_income
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="gameId != null" >
+                game_id,
+            </if>
+            <if test="gameName != null" >
+                game_name,
+            </if>
+            <if test="gameServer != null" >
+                game_server,
+            </if>
+            <if test="playerAccount != null" >
+                player_account,
+            </if>
+            <if test="playerRecharge != null" >
+                player_recharge,
+            </if>
+            <if test="proportion != null" >
+                proportion,
+            </if>
+            <if test="proportionPercent != null" >
+                proportion_percent,
+            </if>
+            <if test="income != null" >
+                income,
+            </if>
+            <if test="incomeTime != null" >
+                income_time,
+            </if>
+            <if test="userId != null" >
+                user_id,
+            </if>
+            <if test="account != null" >
+                account,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="gameId != null" >
+                #{gameId,jdbcType=INTEGER},
+            </if>
+            <if test="gameName != null" >
+                #{gameName,jdbcType=VARCHAR},
+            </if>
+            <if test="gameServer != null" >
+                #{gameServer,jdbcType=INTEGER},
+            </if>
+            <if test="playerAccount != null" >
+                #{playerAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="playerRecharge != null" >
+                #{playerRecharge,jdbcType=DOUBLE},
+            </if>
+            <if test="proportion != null" >
+                #{proportion,jdbcType=DOUBLE},
+            </if>
+            <if test="proportionPercent != null" >
+                #{proportionPercent,jdbcType=VARCHAR},
+            </if>
+            <if test="income != null" >
+                #{income,jdbcType=DOUBLE},
+            </if>
+            <if test="incomeTime != null" >
+                #{incomeTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="userId != null" >
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="account != null" >
+                #{account,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="org.thl.entity.Income" >
+        update pro_income
+        <set >
+            <if test="gameId != null" >
+                game_id = #{gameId,jdbcType=INTEGER},
+            </if>
+            <if test="gameName != null" >
+                game_name = #{gameName,jdbcType=VARCHAR},
+            </if>
+            <if test="gameServer != null" >
+                game_server = #{gameServer,jdbcType=INTEGER},
+            </if>
+            <if test="playerAccount != null" >
+                player_account = #{playerAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="playerRecharge != null" >
+                player_recharge = #{playerRecharge,jdbcType=DOUBLE},
+            </if>
+            <if test="proportion != null" >
+                proportion = #{proportion,jdbcType=DOUBLE},
+            </if>
+            <if test="proportionPercent != null" >
+                proportion_percent = #{proportionPercent,jdbcType=VARCHAR},
+            </if>
+            <if test="income != null" >
+                income = #{income,jdbcType=DOUBLE},
+            </if>
+            <if test="incomeTime != null" >
+                income_time = #{incomeTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="userId != null" >
+                user_id = #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="account != null" >
+                account = #{account,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="org.thl.entity.Income" >
+        update pro_income
+        set game_id = #{gameId,jdbcType=INTEGER},
+        game_name = #{gameName,jdbcType=VARCHAR},
+        game_server = #{gameServer,jdbcType=INTEGER},
+        player_account = #{playerAccount,jdbcType=VARCHAR},
+        player_recharge = #{playerRecharge,jdbcType=DOUBLE},
+        proportion = #{proportion,jdbcType=DOUBLE},
+        proportion_percent = #{proportionPercent,jdbcType=VARCHAR},
+        income = #{income,jdbcType=DOUBLE},
+        income_time = #{incomeTime,jdbcType=TIMESTAMP},
+        user_id = #{userId,jdbcType=INTEGER},
+        account = #{account,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+</mapper>

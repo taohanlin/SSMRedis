@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.thl.dao.LogMapper" >
+    <resultMap id="BaseResultMap" type="org.thl.entity.Log" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="operator" property="operator" jdbcType="VARCHAR" />
+        <result column="operate" property="operate" jdbcType="VARCHAR" />
+        <result column="log_describe" property="logDescribe" jdbcType="VARCHAR" />
+        <result column="ip" property="ip" jdbcType="VARCHAR" />
+        <result column="log_date" property="logDate" jdbcType="TIMESTAMP" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+        id, operator, operate, log_describe, ip, log_date
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select
+        <include refid="Base_Column_List" />
+        from pro_log
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+        delete from pro_log
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="org.thl.entity.Log" >
+        insert into pro_log (id, operator, operate,
+        log_describe, ip, log_date
+        )
+        values (#{id,jdbcType=INTEGER}, #{operator,jdbcType=VARCHAR}, #{operate,jdbcType=VARCHAR},
+        #{logDescribe,jdbcType=VARCHAR}, #{ip,jdbcType=VARCHAR}, #{logDate,jdbcType=TIMESTAMP}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="org.thl.entity.Log" >
+        insert into pro_log
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="operator != null" >
+                operator,
+            </if>
+            <if test="operate != null" >
+                operate,
+            </if>
+            <if test="logDescribe != null" >
+                log_describe,
+            </if>
+            <if test="ip != null" >
+                ip,
+            </if>
+            <if test="logDate != null" >
+                log_date,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="operator != null" >
+                #{operator,jdbcType=VARCHAR},
+            </if>
+            <if test="operate != null" >
+                #{operate,jdbcType=VARCHAR},
+            </if>
+            <if test="logDescribe != null" >
+                #{logDescribe,jdbcType=VARCHAR},
+            </if>
+            <if test="ip != null" >
+                #{ip,jdbcType=VARCHAR},
+            </if>
+            <if test="logDate != null" >
+                #{logDate,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="org.thl.entity.Log" >
+        update pro_log
+        <set >
+            <if test="operator != null" >
+                operator = #{operator,jdbcType=VARCHAR},
+            </if>
+            <if test="operate != null" >
+                operate = #{operate,jdbcType=VARCHAR},
+            </if>
+            <if test="logDescribe != null" >
+                log_describe = #{logDescribe,jdbcType=VARCHAR},
+            </if>
+            <if test="ip != null" >
+                ip = #{ip,jdbcType=VARCHAR},
+            </if>
+            <if test="logDate != null" >
+                log_date = #{logDate,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="org.thl.entity.Log" >
+        update pro_log
+        set operator = #{operator,jdbcType=VARCHAR},
+        operate = #{operate,jdbcType=VARCHAR},
+        log_describe = #{logDescribe,jdbcType=VARCHAR},
+        ip = #{ip,jdbcType=VARCHAR},
+        log_date = #{logDate,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+</mapper>

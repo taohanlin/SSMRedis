@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.thl.dao.ApplyMapper" >
+    <resultMap id="BaseResultMap" type="org.thl.entity.Apply" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="amount" property="amount" jdbcType="DOUBLE" />
+        <result column="user_id" property="userId" jdbcType="INTEGER" />
+        <result column="account" property="account" jdbcType="VARCHAR" />
+        <result column="apply_time" property="applyTime" jdbcType="TIMESTAMP" />
+        <result column="dealt_time" property="dealtTime" jdbcType="TIMESTAMP" />
+        <result column="status" property="status" jdbcType="INTEGER" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+        id, amount, user_id, account, apply_time, dealt_time, status
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select
+        <include refid="Base_Column_List" />
+        from pro_apply
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+        delete from pro_apply
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="org.thl.entity.Apply" >
+        insert into pro_apply (id, amount, user_id,
+        account, apply_time, dealt_time,
+        status)
+        values (#{id,jdbcType=INTEGER}, #{amount,jdbcType=DOUBLE}, #{userId,jdbcType=INTEGER},
+        #{account,jdbcType=VARCHAR}, #{applyTime,jdbcType=TIMESTAMP}, #{dealtTime,jdbcType=TIMESTAMP},
+        #{status,jdbcType=INTEGER})
+    </insert>
+
+    <insert id="insertSelective" parameterType="org.thl.entity.Apply" >
+        insert into pro_apply
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="amount != null" >
+                amount,
+            </if>
+            <if test="userId != null" >
+                user_id,
+            </if>
+            <if test="account != null" >
+                account,
+            </if>
+            <if test="applyTime != null" >
+                apply_time,
+            </if>
+            <if test="dealtTime != null" >
+                dealt_time,
+            </if>
+            <if test="status != null" >
+                status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="amount != null" >
+                #{amount,jdbcType=DOUBLE},
+            </if>
+            <if test="userId != null" >
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="account != null" >
+                #{account,jdbcType=VARCHAR},
+            </if>
+            <if test="applyTime != null" >
+                #{applyTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="dealtTime != null" >
+                #{dealtTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null" >
+                #{status,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="org.thl.entity.Apply" >
+        update pro_apply
+        <set >
+            <if test="amount != null" >
+                amount = #{amount,jdbcType=DOUBLE},
+            </if>
+            <if test="userId != null" >
+                user_id = #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="account != null" >
+                account = #{account,jdbcType=VARCHAR},
+            </if>
+            <if test="applyTime != null" >
+                apply_time = #{applyTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="dealtTime != null" >
+                dealt_time = #{dealtTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null" >
+                status = #{status,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="org.thl.entity.Apply" >
+        update pro_apply
+        set amount = #{amount,jdbcType=DOUBLE},
+        user_id = #{userId,jdbcType=INTEGER},
+        account = #{account,jdbcType=VARCHAR},
+        apply_time = #{applyTime,jdbcType=TIMESTAMP},
+        dealt_time = #{dealtTime,jdbcType=TIMESTAMP},
+        status = #{status,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+</mapper>

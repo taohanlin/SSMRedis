@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+                        http://www.springframework.org/schema/context
+                        http://www.springframework.org/schema/context/spring-context-3.1.xsd
+                        http://www.springframework.org/schema/tx
+                        http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+                        http://www.springframework.org/schema/aop
+                        http://www.springframework.org/schema/aop/spring-aop-3.1.xsd">
+    <!-- 自动扫描 -->
+    <context:component-scan base-package="org.thl">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+    </context:component-scan>
+    <!-- 引入配置文件 -->
+    <!--<bean id="propertyConfigurer"
+        class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="classpath:spring-local.properties" />
+    </bean>
+
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+        destroy-method="close">
+        <property name="driverClassName" value="${driver}" />
+        <property name="url" value="${url}" />
+        <property name="username" value="${username}" />
+        <property name="password" value="${password}" />
+        &lt;!&ndash; 初始化连接大小 &ndash;&gt;
+        <property name="initialSize" value="${initialSize}"></property>
+        &lt;!&ndash; 连接池最大数量 &ndash;&gt;
+        <property name="maxActive" value="${maxActive}"></property>
+        &lt;!&ndash; 连接池最大空闲 &ndash;&gt;
+        <property name="maxIdle" value="${maxIdle}"></property>
+        &lt;!&ndash; 连接池最小空闲 &ndash;&gt;
+        <property name="minIdle" value="${minIdle}"></property>
+        &lt;!&ndash; 获取连接最大等待时间 &ndash;&gt;
+        <property name="maxWait" value="${maxWait}"></property>
+    </bean>
+
+
+
+
+
+    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <property name="maxTotal" value="${redis.maxTotal}" />
+        <property name="maxIdle" value="${redis.maxIdle}" />
+        <property name="maxWaitMillis" value="${redis.maxWaitMillis}" />
+        <property name="testOnBorrow" value="true"/>
+    </bean>
+
+
+
+    <bean id="jedisShardInfo" class="redis.clients.jedis.JedisShardInfo">
+        <constructor-arg index="0" value="${redis.one.ip}" />
+        <constructor-arg index="1" value="${redis.one.port}" type="int"/>
+    </bean>-->
+
+    <!-- spring和MyBatis完美整合，不需要mybatis的配置映射文件 -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <!-- 自动扫描mapping.xml文件 -->
+        <property name="mapperLocations" value="classpath:/mapper/*Mapper.xml" />
+    </bean>
+
+    <!-- DAO接口所在包名，Spring会自动查找其下的类 -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="org.thl" />
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+    </bean>
+
+    <!-- 引入配置文件 -->
+    <!--<bean id="propertyConfigurer"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="classpath:jdbc.properties" />
+    </bean>-->
+
+
+
+    <!-- (事务管理)transaction manager, use JtaTransactionManager for global tx -->
+    <bean id="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="save*" propagation="REQUIRED"
+                       rollback-for="Exception" />
+            <tx:method name="add*" propagation="REQUIRED" rollback-for="Exception" />
+            <tx:method name="create*" propagation="REQUIRED"
+                       rollback-for="Exception" />
+            <tx:method name="insert*" propagation="REQUIRED"
+                       rollback-for="Exception" />
+            <tx:method name="update*" propagation="REQUIRED"
+                       rollback-for="Exception" />
+            <tx:method name="merge*" propagation="REQUIRED"
+                       rollback-for="Exception" />
+            <tx:method name="del*" propagation="REQUIRED" rollback-for="Exception" />
+            <tx:method name="remove*" propagation="REQUIRED"
+                       rollback-for="Exception" />
+            <tx:method name="put*" propagation="REQUIRED" rollback-for="Exception" />
+            <tx:method name="use*" propagation="REQUIRED" rollback-for="Exception" />
+            <tx:method name="delete*" propagation="REQUIRED"
+                       rollback-for="Exception" />
+            <tx:method name="check*" propagation="REQUIRED"
+                       rollback-for="Exception" />
+            <tx:method name="get*" propagation="REQUIRED" read-only="true" />
+            <tx:method name="select*" propagation="REQUIRED" read-only="true" />
+            <tx:method name="find*" propagation="REQUIRED" read-only="true" />
+            <tx:method name="list*" propagation="REQUIRED" read-only="true" />
+            <tx:method name="getUser" propagation="REQUIRED" read-only="true" />
+            <tx:method name="*" read-only="true" />
+        </tx:attributes>
+    </tx:advice>
+
+    <aop:config expose-proxy="true">
+        <!-- 只对业务逻辑层实施事务 -->
+        <!-- execution(* org.scme.*.service.*.*(..)) -->
+        <aop:pointcut id="txPointcut"
+                      expression="execution(* org.thl.service..*.*(..))" />
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut" />
+    </aop:config>
+
+
+    <!--<beans profile="local">
+        <context:property-placeholder ignore-resource-not-found="true"  location="classpath*:/spring-local.properties" />
+
+        &lt;!&ndash; Tomcat JDBC连接池 &ndash;&gt;
+        <bean id="dataSource" class="org.apache.tomcat.jdbc.pool.DataSource" destroy-method="close">
+            <property name="driverClassName" value="${driver}" />
+            <property name="url" value="${url}" />
+            <property name="username" value="${username}" />
+            <property name="password" value="${password}" />
+
+            &lt;!&ndash; Connection Pooling Info &ndash;&gt;
+            <property name="maxActive" value="${jdbc.pool.maxActive}" />
+            <property name="maxIdle" value="${jdbc.pool.maxIdle}" />
+            <property name="minIdle" value="0" />
+            <property name="defaultAutoCommit" value="false" />
+            &lt;!&ndash; 连接Idle10分钟后超时，每1分钟检查一次 &ndash;&gt;
+            <property name="timeBetweenEvictionRunsMillis" value="60000" />
+            <property name="minEvictableIdleTimeMillis" value="600000" />
+        </bean>
+
+        &lt;!&ndash; jedis &ndash;&gt;
+        <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+            <property name="maxTotal" value="${redis.maxTotal}" />
+            <property name="maxIdle" value="${redis.maxIdle}" />
+            <property name="maxWaitMillis" value="${redis.maxWaitMillis}" />
+            <property name="testOnBorrow" value="true"/>
+        </bean>
+
+
+
+        <bean id="jedisShardInfo" class="redis.clients.jedis.JedisShardInfo">
+            <constructor-arg index="0" value="${redis.one.ip}" />
+            <constructor-arg index="1" value="${redis.one.port}" type="int"/>
+        </bean>
+
+    </beans>-->
+
+    <bean id="shardedJedisPool" class="redis.clients.jedis.ShardedJedisPool">
+        <constructor-arg index="0" ref="jedisPoolConfig" />
+        <constructor-arg index="1">
+            <list>
+                <ref bean="jedisShardInfo" />
+            </list>
+        </constructor-arg>
+    </bean>
+
+    <beans profile="local">
+        <context:property-placeholder ignore-resource-not-found="true"
+                                      location="classpath*:/spring-local.properties" />
+
+        <!-- Tomcat JDBC连接池 -->
+        <bean id="dataSource" class="org.apache.tomcat.jdbc.pool.DataSource" destroy-method="close">
+            <property name="driverClassName" value="${driver}" />
+            <property name="url" value="${url}" />
+            <property name="username" value="${username}" />
+            <property name="password" value="${password}" />
+
+            <!-- Connection Pooling Info -->
+            <property name="maxActive" value="${jdbc.pool.maxActive}" />
+            <property name="maxIdle" value="${jdbc.pool.maxIdle}" />
+            <property name="minIdle" value="0" />
+            <property name="defaultAutoCommit" value="false" />
+            <!-- 连接Idle10分钟后超时，每1分钟检查一次 -->
+            <property name="timeBetweenEvictionRunsMillis" value="60000" />
+            <property name="minEvictableIdleTimeMillis" value="600000" />
+        </bean>
+
+        <!-- jedis -->
+        <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+            <property name="maxTotal" value="${redis.maxTotal}" />
+            <property name="maxIdle" value="${redis.maxIdle}" />
+            <property name="maxWaitMillis" value="${redis.maxWaitMillis}" />
+            <property name="testOnBorrow" value="true"/>
+        </bean>
+
+        <bean id="jedisShardInfo" class="redis.clients.jedis.JedisShardInfo">
+            <constructor-arg index="0" value="${redis.one.ip}" />
+            <constructor-arg index="1" value="${redis.one.port}" type="int"/>
+        </bean>
+
+    </beans>
+
+    <beans profile="develop">
+        <context:property-placeholder ignore-resource-not-found="true"
+                                      location="classpath*:/spring-develop.properties" />
+
+        <!-- Tomcat JDBC连接池 -->
+        <bean id="dataSource" class="org.apache.tomcat.jdbc.pool.DataSource" destroy-method="close">
+            <property name="driverClassName" value="${driver}" />
+            <property name="url" value="${url}" />
+            <property name="username" value="${username}" />
+            <property name="password" value="${password}" />
+
+            <!-- Connection Pooling Info -->
+            <property name="maxActive" value="${jdbc.pool.maxActive}" />
+            <property name="maxIdle" value="${jdbc.pool.maxIdle}" />
+            <property name="minIdle" value="0" />
+            <property name="defaultAutoCommit" value="false" />
+            <!-- 连接Idle10分钟后超时，每1分钟检查一次 -->
+            <property name="timeBetweenEvictionRunsMillis" value="60000" />
+            <property name="minEvictableIdleTimeMillis" value="600000" />
+        </bean>
+
+        <!-- jedis -->
+        <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+            <property name="maxTotal" value="${redis.maxTotal}" />
+            <property name="maxIdle" value="${redis.maxIdle}" />
+            <property name="maxWaitMillis" value="${redis.maxWaitMillis}" />
+            <property name="testOnBorrow" value="true"/>
+        </bean>
+
+        <bean id="jedisShardInfo" class="redis.clients.jedis.JedisShardInfo">
+            <constructor-arg index="0" value="${redis.one.ip}" />
+            <constructor-arg index="1" value="${redis.one.port}" type="int"/>
+        </bean>
+
+    </beans>
+
+</beans>

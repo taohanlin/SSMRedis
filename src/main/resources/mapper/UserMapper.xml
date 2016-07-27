@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.thl.dao.UserMapper" >
+    <resultMap id="BaseResultMap" type="org.thl.entity.User" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="account" property="account" jdbcType="VARCHAR" />
+        <result column="password" property="password" jdbcType="VARCHAR" />
+        <result column="salt" property="salt" jdbcType="VARCHAR" />
+        <result column="realname" property="realname" jdbcType="VARCHAR" />
+        <result column="identity" property="identity" jdbcType="VARCHAR" />
+        <result column="email" property="email" jdbcType="VARCHAR" />
+        <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+        <result column="register_time" property="registerTime" jdbcType="TIMESTAMP" />
+        <result column="login_time" property="loginTime" jdbcType="TIMESTAMP" />
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+        <result column="bank" property="bank" jdbcType="VARCHAR" />
+        <result column="bank_account" property="bankAccount" jdbcType="VARCHAR" />
+        <result column="balance" property="balance" jdbcType="DOUBLE" />
+        <result column="origin" property="origin" jdbcType="VARCHAR" />
+        <result column="status" property="status" jdbcType="INTEGER" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+        id, account, password, salt, realname, identity, email, mobile, register_time, login_time,
+        update_time, bank, bank_account, balance, origin, status
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select
+        <include refid="Base_Column_List" />
+        from pro_user
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+        delete from pro_user
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="org.thl.entity.User" >
+        insert into pro_user (id, account, password,
+        salt, realname, identity,
+        email, mobile, register_time,
+        login_time, update_time, bank,
+        bank_account, balance, origin,
+        status)
+        values (#{id,jdbcType=INTEGER}, #{account,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
+        #{salt,jdbcType=VARCHAR}, #{realname,jdbcType=VARCHAR}, #{identity,jdbcType=VARCHAR},
+        #{email,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{registerTime,jdbcType=TIMESTAMP},
+        #{loginTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{bank,jdbcType=VARCHAR},
+        #{bankAccount,jdbcType=VARCHAR}, #{balance,jdbcType=DOUBLE}, #{origin,jdbcType=VARCHAR},
+        #{status,jdbcType=INTEGER})
+    </insert>
+    <insert id="insertSelective" parameterType="org.thl.entity.User" >
+        insert into pro_user
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="account != null" >
+                account,
+            </if>
+            <if test="password != null" >
+                password,
+            </if>
+            <if test="salt != null" >
+                salt,
+            </if>
+            <if test="realname != null" >
+                realname,
+            </if>
+            <if test="identity != null" >
+                identity,
+            </if>
+            <if test="email != null" >
+                email,
+            </if>
+            <if test="mobile != null" >
+                mobile,
+            </if>
+            <if test="registerTime != null" >
+                register_time,
+            </if>
+            <if test="loginTime != null" >
+                login_time,
+            </if>
+            <if test="updateTime != null" >
+                update_time,
+            </if>
+            <if test="bank != null" >
+                bank,
+            </if>
+            <if test="bankAccount != null" >
+                bank_account,
+            </if>
+            <if test="balance != null" >
+                balance,
+            </if>
+            <if test="origin != null" >
+                origin,
+            </if>
+            <if test="status != null" >
+                status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="account != null" >
+                #{account,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null" >
+                #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="salt != null" >
+                #{salt,jdbcType=VARCHAR},
+            </if>
+            <if test="realname != null" >
+                #{realname,jdbcType=VARCHAR},
+            </if>
+            <if test="identity != null" >
+                #{identity,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null" >
+                #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="mobile != null" >
+                #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="registerTime != null" >
+                #{registerTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="loginTime != null" >
+                #{loginTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null" >
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="bank != null" >
+                #{bank,jdbcType=VARCHAR},
+            </if>
+            <if test="bankAccount != null" >
+                #{bankAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="balance != null" >
+                #{balance,jdbcType=DOUBLE},
+            </if>
+            <if test="origin != null" >
+                #{origin,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null" >
+                #{status,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="org.thl.entity.User" >
+        update pro_user
+        <set >
+            <if test="account != null" >
+                account = #{account,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null" >
+                password = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="salt != null" >
+                salt = #{salt,jdbcType=VARCHAR},
+            </if>
+            <if test="realname != null" >
+                realname = #{realname,jdbcType=VARCHAR},
+            </if>
+            <if test="identity != null" >
+                identity = #{identity,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null" >
+                email = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="mobile != null" >
+                mobile = #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="registerTime != null" >
+                register_time = #{registerTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="loginTime != null" >
+                login_time = #{loginTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null" >
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="bank != null" >
+                bank = #{bank,jdbcType=VARCHAR},
+            </if>
+            <if test="bankAccount != null" >
+                bank_account = #{bankAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="balance != null" >
+                balance = #{balance,jdbcType=DOUBLE},
+            </if>
+            <if test="origin != null" >
+                origin = #{origin,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null" >
+                status = #{status,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="org.thl.entity.User" >
+        update pro_user
+        set account = #{account,jdbcType=VARCHAR},
+        password = #{password,jdbcType=VARCHAR},
+        salt = #{salt,jdbcType=VARCHAR},
+        realname = #{realname,jdbcType=VARCHAR},
+        identity = #{identity,jdbcType=VARCHAR},
+        email = #{email,jdbcType=VARCHAR},
+        mobile = #{mobile,jdbcType=VARCHAR},
+        register_time = #{registerTime,jdbcType=TIMESTAMP},
+        login_time = #{loginTime,jdbcType=TIMESTAMP},
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+        bank = #{bank,jdbcType=VARCHAR},
+        bank_account = #{bankAccount,jdbcType=VARCHAR},
+        balance = #{balance,jdbcType=DOUBLE},
+        origin = #{origin,jdbcType=VARCHAR},
+        status = #{status,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+</mapper>
